@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Generator - Prime Overlay</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .preview {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .icon-preview {
+      text-align: center;
+    }
+
+    canvas {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      display: block;
+      margin: 10px auto;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 10px auto;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .instructions {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+
+    .instructions h3 {
+      color: #333;
+      margin-top: 0;
+    }
+
+    .instructions ol {
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .success {
+      text-align: center;
+      color: #4caf50;
+      font-weight: bold;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Prime Overlay Icon Generator</h1>
+
+    <div class="preview">
+      <div class="icon-preview">
+        <canvas id="icon16" width="16" height="16"></canvas>
+        <p>16x16</p>
+        <button onclick="downloadIcon('icon16', 16)">Download</button>
+      </div>
+
+      <div class="icon-preview">
+        <canvas id="icon48" width="48" height="48"></canvas>
+        <p>48x48</p>
+        <button onclick="downloadIcon('icon48', 48)">Download</button>
+      </div>
+
+      <div class="icon-preview">
+        <canvas id="icon128" width="128" height="128"></canvas>
+        <p>128x128</p>
+        <button onclick="downloadIcon('icon128', 128)">Download</button>
+      </div>
+    </div>
+
+    <button onclick="downloadAll()" style="background: #4caf50; font-size: 18px; padding: 15px 40px;">
+      📥 Download All Icons
+    </button>
+
+    <div class="success" id="success">Icons downloaded! Check your Downloads folder.</div>
+
+    <div class="instructions">
+      <h3>📋 Instructions:</h3>
+      <ol>
+        <li>Click "Download All Icons" above to download all three icon sizes</li>
+        <li>Move the downloaded files to the <code>icons/</code> folder in your extension directory</li>
+        <li>Make sure they're named: <code>icon16.png</code>, <code>icon48.png</code>, <code>icon128.png</code></li>
+        <li>Load the extension in Chrome at <code>chrome://extensions/</code></li>
+        <li>Enable "Developer mode" and click "Load unpacked"</li>
+        <li>Select your extension folder</li>
+        <li>Done! Visit Prime Video and test it out</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    // Generate icons on page load
+    window.onload = function() {
+      generateIcon('icon16', 16);
+      generateIcon('icon48', 48);
+      generateIcon('icon128', 128);
+    };
+
+    function generateIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Add "PO" text
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.4}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('PO', size / 2, size / 2);
+    }
+
+    function downloadIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const url = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `icon${size}.png`;
+      link.href = url;
+      link.click();
+
+      showSuccess();
+    }
+
+    function downloadAll() {
+      downloadIcon('icon16', 16);
+      setTimeout(() => downloadIcon('icon48', 48), 200);
+      setTimeout(() => downloadIcon('icon128', 128), 400);
+    }
+
+    function showSuccess() {
+      const success = document.getElementById('success');
+      success.style.display = 'block';
+      setTimeout(() => {
+        success.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
