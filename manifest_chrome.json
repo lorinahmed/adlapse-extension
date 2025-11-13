@@ -5,8 +5,7 @@
   "description": "Turn Prime Video ads into learning opportunities with news, poetry, and vocabulary",
 
   "permissions": [
-    "storage",
-    "activeTab"
+    "storage"
   ],
 
   "host_permissions": [
